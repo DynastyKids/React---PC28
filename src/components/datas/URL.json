@@ -1,0 +1,30 @@
+{
+  "name": "JSON Datasource",
+  "Status": 0,
+  "Message": "Approved",
+  "datas": {
+    "base": "https://ndata.testingstar.top/",
+    "bg": {
+      "base": "https://ndata.testingstar.top/bg/",
+      "latest": "https://ndata.testingstar.top/bg/latest",
+      "history": "https://ndata.testingstar.top/bg/history/",
+      "predict": "https://ndata.testingstar.top/bg/predict/"
+    },
+    "btc": {
+      "base": "https://ndata.testingstar.top/btc/",
+      "latest": "https://ndata.testingstar.top/btc/latest",
+      "history": "https://ndata.testingstar.top/btc/history/",
+      "predict": "https://ndata.testingstar.top/btc/predict/"
+    },
+    "ca": {
+      "base": "https://ndata.testingstar.top/ca/",
+      "latest": "https://ndata.testingstar.top/ca/latest",
+      "history": "https://ndata.testingstar.top/ca/history/",
+      "predict": "https://ndata.testingstar.top/ca/predict/"
+    },
+    "all": {
+      "history": "https://ndata.testingstar.top/history/all/",
+      "predict": "https://ndata.testingstar.top/predict/all/"
+    }
+  }
+}
