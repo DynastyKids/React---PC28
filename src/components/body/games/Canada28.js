@@ -11,9 +11,102 @@ import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect'
 import ResultTable from '../ResultTable';
-import rows from '../ResultTable'
-import axios from 'axios'
-import Countdown from '../Countdown';
+import rows from '../ResultTable';
+import axios from 'axios';
+
+class Countdown extends React.Component {
+    constructor(props) {
+      super(props);
+      console.log(props.time)
+      this.state = { time: {}, seconds: props.time===NaN ? 60 : Math.abs(props.time)};
+      this.timer = 0;
+      this.startTimer = this.startTimer.bind(this);
+      this.countDown = this.countDown.bind(this);
+      this.startTimer()
+    }
+  
+    secondsToTime(secs){
+      let hours = Math.floor(secs / (60 * 60));
+      let divisor_for_minutes = secs % (60 * 60);
+      let minutes = Math.floor(divisor_for_minutes / 60);
+      let divisor_for_seconds = divisor_for_minutes % 60;
+      let seconds = Math.ceil(divisor_for_seconds);
+      let obj = {
+        "h": hours,
+        "m": minutes,
+        "s": seconds
+      };
+      return obj;
+    }
+  
+    componentDidMount() {
+      let timeLeftVar = this.secondsToTime(this.state.seconds);
+      this.setState({ time: timeLeftVar });
+    }
+  
+    startTimer() {
+      if (this.timer === 0 && this.state.seconds > 0) {
+        this.timer = setInterval(this.countDown, 1000);
+      }
+    }
+  
+    countDown() {
+      // Remove one second, set state so a re-render happens.
+      let seconds = this.state.seconds - 1;
+      this.setState({
+        time: this.secondsToTime(seconds),
+        seconds: seconds,
+      });
+      
+      // Check if we're at zero.
+      if (seconds === 0) { 
+        clearInterval(this.timer);
+      }
+    }
+  
+    render() {
+      return(
+        <>
+        <dl>
+        <dd><em id="bjmin1">{Math.floor(this.state.time.m/10)}</em></dd>
+        <dd><em id="bjmin2">{Math.floor(this.state.time.m%10)}</em></dd>
+        <dt id="bjdivider">:</dt>
+        <dd><em id="bjsec1">{Math.floor(this.state.time.s/10)}</em></dd>
+        <dd><em id="bjsec2">{Math.floor(this.state.time.s%10)}</em></dd>
+        </dl>
+        </>
+      );
+    }
+}
+
+// function checkNewData(){
+//     const calculateTimeLeft = () => {
+//         // const difference = +new Date() - +new Date();
+//         const difference = +new Date(Date.parse(data.Time + ".000+08:00") + 210000) - +new Date();
+//         let timeLeft = {};
+//         if (difference > 0) {
+//             timeLeft = {
+//                 hours: Math.floor((difference / (1000 * 60 * 60))),
+//                 minutes: Math.floor((difference / 1000 / 60) % 60),
+//                 seconds: Math.floor((difference / 1000) % 60),
+//             };
+//         } else{
+//             axios.get(props.urls.latest).then(response => {
+//                 setData(response.data)
+//             })
+//         }
+//         return timeLeft;
+//     };
+
+//     const [timeLeft, setTimeLeft] = React.useState(calculateTimeLeft());
+    
+//     React.useEffect(() => {
+//         setTimeout(() => {
+//             setTimeLeft(calculateTimeLeft());
+//         }, 1000);
+//         console.log(timeLeft)
+//     })
+// }
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -51,26 +144,31 @@ function a11yProps(index) {
 
 function Canada28(props) {
     // const {addrObjs,key} = props
-    const [isLoading, setLoading] = React.useState(true)
     const [data, setData] = React.useState({ Data: [] });
+    const [isLoadingLatest, setLoadingLatest] = React.useState(true)
     const [historyResults, setHisotryResults] = React.useState({ Data: [] });
+    const [isLoadingHist, setLoadingHist] = React.useState(true)
     const [predictResults, setPredictResults] = React.useState({ Data: [] });
-    
+    const [isLoadingPred, setLoadingPred] = React.useState(true)
 
     React.useEffect(() => {
+        console.log(props.urls.history + props.keys.key)
         // 获取当前期数据
         axios.get(props.urls.latest).then(response => {
             setData(response.data);
+            setLoadingLatest(false);
         })
 
         //获取历史数据
         axios.get(props.urls.history + props.keys.key).then(response => {
-            setHisotryResults(response.historyResults);
+            setHisotryResults(response.data);
+            setLoadingHist(false);
         })
 
         //获取预测数据
         axios.get(props.urls.predict + props.keys.key).then(response =>{
-            setPredictResults(response.predictResults);
+            setPredictResults(response.data);
+            setLoadingPred(false);
         })
     }, []);
 
@@ -85,17 +183,16 @@ function Canada28(props) {
 
     const optionrows = [];
     const num = [];
-    if (data.Data !== undefined) {
+    if (!isLoadingLatest && !isLoadingHist && !isLoadingPred) {
+        console.log(data)
         for (let i = 0; i < 50; i++) {
-            optionrows.push(<option value={data.Data - i}>{data.Data - i}</option>)
+            optionrows.push(<option value={data.Draw - i}>{data.Draw - i}</option>)
         }
-    }
 
-    if (data.result !== undefined) {
-        num.push(<><dd>{data.result.substr(0, 1)}</dd><dt>+</dt></>)
-        num.push(<><dd>{data.result.substr(4, 1)}</dd><dt>+</dt></>)
-        num.push(<><dd>{data.result.substr(8, 1)}</dd><dt>=</dt></>)
-        const addednum = parseInt(data.result.substr(0, 1)) + parseInt(data.result.substr(4, 1)) + parseInt(data.result.substr(8, 1))
+        num.push(<><dd>{data.calc.substr(0, 1)}</dd><dt>+</dt></>)
+        num.push(<><dd>{data.calc.substr(4, 1)}</dd><dt>+</dt></>)
+        num.push(<><dd>{data.calc.substr(8, 1)}</dd><dt>=</dt></>)
+        const addednum = parseInt(data.calc.substr(0, 1)) + parseInt(data.calc.substr(4, 1)) + parseInt(data.calc.substr(8, 1))
         num.push(<><dd className="zong">{addednum}</dd></>)
         if (addednum <= 14) {
             if (addednum % 2 === 0) {
@@ -112,41 +209,20 @@ function Canada28(props) {
         }
     }
 
+    var currentTime = Date.parse(new Date().toUTCString())
     var nextdraw = Date.parse(data.Time + ".000+08:00") + 210000;
-    var nextdate = new Date(0)
-    nextdate.setUTCMilliseconds(Date.parse(data.Time + ".000+08:00") + 210000)
-    if (nextdate.getHours() === 20) {
-        nextdate = nextdate + 3390000
-    }
-
-
-    const calculateTimeLeft = () => {
-        // const difference = +new Date() - +new Date();
-        const difference = +new Date(Date.parse(data.Time + ".000+08:00") + 210000) - +new Date();
-        let timeLeft = {};
-        if (difference > 0) {
-            timeLeft = {
-                hours: Math.floor((difference / (1000 * 60 * 60))),
-                minutes: Math.floor((difference / 1000 / 60) % 60),
-                seconds: Math.floor((difference / 1000) % 60),
-            };
-        } else{
-            axios.get(props.urls.latest).then(response => {
-                setData(response.data)
-            })
-        }
-        return timeLeft;
-    };
-
-    const [timeLeft, setTimeLeft] = React.useState(calculateTimeLeft());
+    // var nextdate = new Date(0)
+    // nextdate.setUTCMilliseconds(Date.parse(data.Time + ".000+08:00") + 210000)
+    // if (nextdate.getHours() === 20) {
+    //     nextdate = nextdate + 3390000
+    // }
+    var countdown=Math.floor((Date.parse(data.Time + ".000+08:00") + 210000-Date.parse(new Date().toUTCString()))/1000)
     
-    React.useEffect(() => {
-        setTimeout(() => {
-            setTimeLeft(calculateTimeLeft());
-        }, 1000);
-        console.log(timeLeft)
-    })
+    // console.log(nextdraw)
+    // console.log(Date.parse(new Date().toUTCString()))
+    // console.log(countdown)
 
+    if (!isLoadingLatest && !isLoadingHist && !isLoadingPred) {
     return (
         <>
             {/* Upper part */}
@@ -155,7 +231,7 @@ function Canada28(props) {
                     <div className="info">
                         <div className="left"><img src={ca28logo} alt="CA28icon" /></div>
                         <div className="right">
-                            <div className="bt">最新：<span>{data === undefined ? 0 : data.Data}</span>期</div>
+                            <div className="bt">最新：<span>{data === undefined ? 0 : data.Draw}</span>期</div>
                             <div className="qis_but">
                                 <Box sx={{ minWidth: 120 }}>
                                     <FormControl fullWidth>
@@ -178,7 +254,8 @@ function Canada28(props) {
                     </div>
                     <div className="line"></div>
                     <div className="date">下一期：
-                        <Countdown date={nextdraw} />
+                        {countdown !== NaN ? <Countdown time={countdown}/> : <Countdown time={60}/>}
+                        {/* <Countdown date={nextdraw} /> */}
                     </div>
                     <div className="line"></div>
                     <dl className="kai">
@@ -205,7 +282,8 @@ function Canada28(props) {
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    <ResultTable url={props.urls.history + props.keys.key} />
+                    {console.log(historyResults)}
+                    <ResultTable data={historyResults} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     走势
@@ -216,5 +294,10 @@ function Canada28(props) {
             </Box>
         </>
     );
+    } else{
+        return (<></>);
+    }
 }
+
+
 export default Canada28;
