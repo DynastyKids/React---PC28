@@ -18,12 +18,10 @@ function createData(draw, date, result) {
 export default function ResultTable(props) {
     const [data, setData] = React.useState({ Data: [] });
 
+    console.log(props.data)
+
     React.useEffect(() => {
-        const fetchdata = async () => {
-            const results = await axios(props.url,);
-            setData(results.data)
-        };
-        fetchdata();
+        setData(props.data);
     }, []);
 
     return (
@@ -42,7 +40,7 @@ export default function ResultTable(props) {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row" align="center">{item.draw}</TableCell>
-                            <TableCell align="center">{item.time.replace('T',' ')}</TableCell>
+                            <TableCell align="center">{item.time.replace('T',' ').replace('+00:00','')}</TableCell>
                             <TableCell align="center">{item.calc + " = " + item.result}</TableCell>
                         </TableRow>
                     ))}
