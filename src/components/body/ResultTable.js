@@ -6,19 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import axios from 'axios'
-import { ArrowForwardIosTwoTone } from '@material-ui/icons';
 
 import './../../App.css';
-
-function createData(draw, date, result) {
-    return { draw, date, result };
-}
 
 export default function ResultTable(props) {
     const [data, setData] = React.useState({ Data: [] });
 
-    console.log(props.data)
+    // console.log(props.data)
 
     React.useEffect(() => {
         setData(props.data);

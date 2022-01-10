@@ -11,13 +11,12 @@ import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect'
 import ResultTable from '../ResultTable';
-import rows from '../ResultTable';
+import PredictTable from '../PredictTable';
 import axios from 'axios';
 
 class Countdown extends React.Component {
     constructor(props) {
       super(props);
-      console.log(props.time)
       this.state = { time: {}, seconds: props.time===NaN ? 60 : Math.abs(props.time)};
       this.timer = 0;
       this.startTimer = this.startTimer.bind(this);
@@ -160,15 +159,18 @@ function Canada28(props) {
         })
 
         //获取历史数据
+        console.log(props.urls.history + props.keys.key)
         axios.get(props.urls.history + props.keys.key).then(response => {
             setHisotryResults(response.data);
             setLoadingHist(false);
         })
 
         //获取预测数据
+        console.log(props.urls.predict + props.keys.key)
         axios.get(props.urls.predict + props.keys.key).then(response =>{
             setPredictResults(response.data);
             setLoadingPred(false);
+            console.log(response.data)
         })
     }, []);
 
@@ -255,7 +257,6 @@ function Canada28(props) {
                     <div className="line"></div>
                     <div className="date">下一期：
                         {countdown !== NaN ? <Countdown time={countdown}/> : <Countdown time={60}/>}
-                        {/* <Countdown date={nextdraw} /> */}
                     </div>
                     <div className="line"></div>
                     <dl className="kai">
@@ -282,7 +283,6 @@ function Canada28(props) {
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    {console.log(historyResults)}
                     <ResultTable data={historyResults} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
@@ -290,6 +290,7 @@ function Canada28(props) {
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     预测
+                    <PredictTable preddata={predictResults} histdata={historyResults} />
                 </TabPanel>
             </Box>
         </>
