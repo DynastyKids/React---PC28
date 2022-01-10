@@ -675,6 +675,28 @@ header .tips {
   display: inline-block;
 }
 
+.icon {
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  text-align: center;
+  border-radius: 30px;
+  border: 1px solid #7f1ad5;
+  box-shadow: 0 0 8px #7f1ad5 inset;
+  display: inline-block;
+}
+.icon-wide {
+  width: auto;
+  height: 30px;
+  line-height: 28px;
+  text-align: center;
+  border-radius: 30px;
+  border: 1px solid #7f1ad5;
+  box-shadow: 0 0 8px #7f1ad5 inset;
+  display: inline-block;
+  padding: 0 12px
+}
+
 .main table tbody td .red,
 .main table tbody th .red {
   border: 1px solid #fe919c;

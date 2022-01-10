@@ -72,12 +72,10 @@ export default function BodyTab() {
                 <Canada28 urls={jsonURL.datas.ca} keys={devKey} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Bj28
-                <Bj28 />
+                <Bj28 urls={jsonURL.datas.bg} keys={devKey}/>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Btc28
-                <Btc28 />
+                <Btc28 urls={jsonURL.datas.btc} keys={devKey} />
             </TabPanel>
         </Box>
     );
