@@ -16,7 +16,7 @@ import PredictTable from '../PredictTable';
 import axios from 'axios';
 
 
-class Countdown extends React.Component {
+class CountdownBTC extends React.Component {
     constructor(props) {
         super(props);
         this.state = { time: {}, seconds: Math.abs(props.time) };
@@ -228,7 +228,7 @@ function Btc28(props) {
                         </div>
                         <div className="line"></div>
                         <div className="date">下一期：
-                            <Countdown time={countdown} /> 
+                            <CountdownBTC time={countdown>0 ? countdown : 0} /> 
                         </div>
                         <div className="line"></div>
                         <dl className="kai">

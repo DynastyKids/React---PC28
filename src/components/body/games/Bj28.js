@@ -16,7 +16,7 @@ import PredictTable from '../PredictTable';
 import axios from 'axios';
 
 
-class Countdown extends React.Component {
+class CountdownBG extends React.Component {
     constructor(props) {
         super(props);
         this.state = { time: {}, seconds: isNaN(props.time) ? 60 : Math.abs(props.time) };
@@ -236,7 +236,7 @@ function Bj28(props) {
                         </div>
                         <div className="line"></div>
                         <div className="date">下一期：
-                            {countdown !== NaN ? <Countdown time={countdown} /> : <Countdown time={60} />}
+                            <CountdownBG time={countdown>0 ? countdown : 0} />
                         </div>
                         <div className="line"></div>
                         <dl className="kai">

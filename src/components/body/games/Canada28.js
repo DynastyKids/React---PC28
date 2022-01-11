@@ -15,7 +15,7 @@ import TrendTable from '../TrendTable';
 import PredictTable from '../PredictTable';
 import axios from 'axios';
 
-class Countdown extends React.Component {
+class CountdownCA extends React.Component {
     constructor(props) {
         super(props);
         console.log(props)
@@ -176,7 +176,7 @@ function Canada28(props) {
         console.log(nextdraw)
         console.log(timenow)
         var countdown = nextdraw - timenow
-        console.log(nextdraw- timenow)
+        console.log(nextdraw - timenow)
 
         for (let i = 0; i < 50; i++) {
             optionrows.push(<option value={data.Draw - i}>{data.Draw - i}</option>)
@@ -234,7 +234,7 @@ function Canada28(props) {
                         </div>
                         <div className="line"></div>
                         <div className="date">下一期：
-                            <Countdown time={countdown} />
+                            <CountdownCA time={countdown>0 ? countdown : 0} />
                         </div>
                         <div className="line"></div>
                         <dl className="kai">
