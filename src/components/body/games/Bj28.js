@@ -66,7 +66,6 @@ class CountdownBG extends React.Component {
     }
 
     render() {
-        console.log(this.state.time)
         if (this.state.time.m !== 0 || this.state.time.s !== 0) {
             return (
                 <>
@@ -167,10 +166,7 @@ function Bj28(props) {
         if(bg_lastdrawHrs>=23 && bg_lastdrawMis>=51){
             bg_nextdraw = Date.parse(historyResults.Data[0].time)/1000-28800+32400
         }
-        
         var countdown = bg_nextdraw - bg_timenow
-        console.log(bg_timenow)
-        console.log(bg_nextdraw)
         for (let i = 0; i < 50; i++) {
             optionrows.push(<option value={data.Draw - i}>{data.Draw - i}</option>)
         }
