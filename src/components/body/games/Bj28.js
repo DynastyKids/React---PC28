@@ -132,36 +132,23 @@ function a11yProps(index) {
 function Bj28(props) {
     // const {addrObjs,key} = props
     const [data, setData] = React.useState({ Data: [] });
-    const [isLoadingLatest, setLoadingLatest] = React.useState(true)
+    const [dataLoaded, setDataLoaded] = React.useState(false)
     const [historyResults, setHisotryResults] = React.useState({ Data: [] });
-    const [isLoadingHist, setLoadingHist] = React.useState(true)
     const [predictResults, setPredictResults] = React.useState({ Data: [] });
-    const [isLoadingPred, setLoadingPred] = React.useState(true)
+    const [countdownTime, setCountdownTime] = React.useState(0);
 
     React.useEffect(() => {
-        console.log(props.urls.history + props.keys.key)
-        // 获取当前期数据
-        axios.get(props.urls.latest).then(response => {
-            setData(response.data);
-            setLoadingLatest(false);
+        const requestLatest = axios.get(props.urls.latest)
+        const requestHistory = axios.get(props.urls.history + props.keys.key)
+        const requestPredict = axios.get(props.urls.predict + props.keys.key)
+        axios.all([requestLatest, requestHistory, requestPredict]).then(axios.spread((...responses) => {
+            setData(responses[0].data);
+            setHisotryResults(responses[1].data);
+            setPredictResults(responses[2].data);
+            setDataLoaded(true);
+        })).catch(errors => {
+
         })
-
-        //获取历史数据
-        console.log(props.urls.history + props.keys.key)
-        axios.get(props.urls.history + props.keys.key).then(response => {
-            setHisotryResults(response.data);
-            setLoadingHist(false);
-        })
-
-        //获取预测数据
-        console.log(props.urls.predict + props.keys.key)
-        axios.get(props.urls.predict + props.keys.key).then(response => {
-            setPredictResults(response.data);
-            setLoadingPred(false);
-            console.log(response.data)
-        })
-
-
     }, []);
 
     const [value, setValue] = React.useState(0);
@@ -172,14 +159,18 @@ function Bj28(props) {
 
     const optionrows = [];
     const num = [];
-    if (!isLoadingLatest && !isLoadingHist && !isLoadingPred) {
-        var timenow = Date.parse(new Date())/1000 + (new Date().getTimezoneOffset())*60
-        var nextdraw = Date.parse(data.Time)/1000-28800+300;
-        if(new Date().getHours() >= 16 && new Date().getHours()<=23){   // Suspend Draw from 0 UTC
-            nextdraw = Date.parse(data.Time)/1000-28800+3600;
+    if (dataLoaded) {
+        var bg_timenow = Date.parse(new Date())/1000 + (new Date().getTimezoneOffset())*60
+        var bg_lastdrawHrs = new Date(historyResults.Data[0].time).getUTCHours()
+        var bg_lastdrawMis = new Date(historyResults.Data[0].time).getMinutes()
+        var bg_nextdraw = Date.parse(data.Time)/1000-28800+300;
+        if(bg_lastdrawHrs>=23 && bg_lastdrawMis>=51){
+            bg_nextdraw = Date.parse(historyResults.Data[0].time)/1000-28800+32400
         }
-        var countdown = nextdraw - timenow
-        console.log(nextdraw- timenow)
+        
+        var countdown = bg_nextdraw - bg_timenow
+        console.log(bg_timenow)
+        console.log(bg_nextdraw)
         for (let i = 0; i < 50; i++) {
             optionrows.push(<option value={data.Draw - i}>{data.Draw - i}</option>)
         }
@@ -204,7 +195,12 @@ function Bj28(props) {
         }
     }
 
-    if (!isLoadingLatest && !isLoadingHist && !isLoadingPred) {
+    if (dataLoaded) {
+        // setTimeout(() =>{
+        //     axios.get(props.urls.latest).then(response => {
+        //         setData(response.data)
+        //         })
+        //     },countdown );
         return (
             <>
                 {/* Upper part */}
@@ -274,11 +270,6 @@ function Bj28(props) {
                 </Box>
             </>
         );
-        setTimeout(() =>{
-            axios.get(props.urls.latest).then(response => {
-                setData(response.data)
-                })
-            },countdown);
     } else {
         return (<></>);
     }

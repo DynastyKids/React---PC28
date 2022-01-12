@@ -70,7 +70,6 @@ export default function ResultTable(props) {
       }
     }
     setPredictData({Data:valueset})
-    console.log(predict_data.Data)
     setReady(true);
     return(<></>);
   } else {

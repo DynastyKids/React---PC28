@@ -18,7 +18,6 @@ import axios from 'axios';
 class CountdownCA extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props)
         this.state = { time: {}, seconds: props.time };
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
@@ -66,7 +65,6 @@ class CountdownCA extends React.Component {
     }
 
     render() {
-        console.log(this.state.time)
         if (this.state.time.m !== 0 || this.state.time.s !== 0) {
             return (
                 <>
@@ -132,30 +130,21 @@ function a11yProps(index) {
 function Canada28(props) {
     // const {addrObjs,key} = props
     const [data, setData] = React.useState({ Data: [] });
-    const [isLoadingLatest, setLoadingLatest] = React.useState(true)
     const [historyResults, setHisotryResults] = React.useState({ Data: [] });
-    const [isLoadingHist, setLoadingHist] = React.useState(true)
     const [predictResults, setPredictResults] = React.useState({ Data: [] });
-    const [isLoadingPred, setLoadingPred] = React.useState(true)
+    const [dataLoaded, setDataLoaded] = React.useState(false)
 
     React.useEffect(() => {
-        // 获取当前期数据
-        axios.get(props.urls.latest).then(response => {
-            setData(response.data);
-            setLoadingLatest(false);
-        })
+        const requestLatest = axios.get(props.urls.latest)
+        const requestHistory = axios.get(props.urls.history + props.keys.key)
+        const requestPredict = axios.get(props.urls.predict + props.keys.key)
+        axios.all([requestLatest, requestHistory, requestPredict]).then(axios.spread((...responses) => {
+            setData(responses[0].data);
+            setHisotryResults(responses[1].data);
+            setPredictResults(responses[2].data);
+            setDataLoaded(true);
+        })).catch(errors => {
 
-        //获取历史数据
-        axios.get(props.urls.history + props.keys.key).then(response => {
-            setHisotryResults(response.data);
-            setLoadingHist(false);
-        })
-
-        //获取预测数据
-        axios.get(props.urls.predict + props.keys.key).then(response => {
-            setPredictResults(response.data);
-            setLoadingPred(false);
-            console.log(response.data)
         })
     }, []);
 
@@ -167,16 +156,14 @@ function Canada28(props) {
 
     const optionrows = [];
     const num = [];
-    if (!isLoadingLatest && !isLoadingHist && !isLoadingPred) {
-        var timenow = Date.parse(new Date())/1000 + (new Date().getTimezoneOffset())*60
-        var nextdraw = Date.parse(data.Time)/1000-28800+210;
-        if(new Date().getHours() === 0){   // Suspend Draw from 0 UTC
-            nextdraw = Date.parse(data.Time)/1000-28800+3600;
+    if (dataLoaded) {
+        var ca_timenow = Date.parse(new Date()) / 1000 + (new Date().getTimezoneOffset()) * 60
+        var ca_lastdrawHrs = new Date(historyResults.Data[0].time).getUTCHours()
+        var ca_nextdraw = Date.parse(data.Time) / 1000 - 28800 + 210;
+        if(ca_lastdrawHrs===20){
+            ca_nextdraw = Date.parse(historyResults.Data[0].time)/1000-28800+3600
         }
-        console.log(nextdraw)
-        console.log(timenow)
-        var countdown = nextdraw - timenow
-        console.log(nextdraw - timenow)
+        var countdown = ca_nextdraw - ca_timenow
 
         for (let i = 0; i < 50; i++) {
             optionrows.push(<option value={data.Draw - i}>{data.Draw - i}</option>)
@@ -202,7 +189,7 @@ function Canada28(props) {
         }
     }
 
-    if (!isLoadingLatest && !isLoadingHist && !isLoadingPred) {
+    if (dataLoaded) {
         return (
             <>
                 {/* Upper part */}
@@ -234,7 +221,7 @@ function Canada28(props) {
                         </div>
                         <div className="line"></div>
                         <div className="date">下一期：
-                            <CountdownCA time={countdown>0 ? countdown : 0} />
+                            <CountdownCA time={countdown > 0 ? countdown : 0} />
                         </div>
                         <div className="line"></div>
                         <dl className="kai">
@@ -272,11 +259,11 @@ function Canada28(props) {
                 </Box>
             </>
         );
-        setTimeout(() =>{
+        setTimeout(() => {
             axios.get(props.urls.latest).then(response => {
                 setData(response.data)
-                })
-            },countdown);
+            })
+        }, countdown);
     } else {
         return (<></>);
     }

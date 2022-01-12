@@ -131,33 +131,23 @@ function a11yProps(index) {
 function Btc28(props) {
     // const {addrObjs,key} = props
     const [data, setData] = React.useState({ Data: [] });
-    const [isLoadingLatest, setLoadingLatest] = React.useState(true)
+    const [dataLoaded, setDataLoaded] = React.useState(false)
     const [historyResults, setHisotryResults] = React.useState({ Data: [] });
-    const [isLoadingHist, setLoadingHist] = React.useState(true)
     const [predictResults, setPredictResults] = React.useState({ Data: [] });
-    const [isLoadingPred, setLoadingPred] = React.useState(true)
 
     React.useEffect(() => {
-        // 获取当前期数据
-        axios.get(props.urls.latest).then(response => {
-            setData(response.data);
-            setLoadingLatest(false);
-        })
+        const requestLatest = axios.get(props.urls.latest)
+        const requestHistory = axios.get(props.urls.history + props.keys.key)
+        const requestPredict = axios.get(props.urls.predict + props.keys.key)
+        axios.all([requestLatest, requestHistory, requestPredict]).then(axios.spread((...responses) => {
+            setData(responses[0].data);
+            setHisotryResults(responses[1].data);
+            setPredictResults(responses[2].data);
+            setDataLoaded(true);
+        })).catch(errors => {
 
-        //获取历史数据
-        axios.get(props.urls.history + props.keys.key).then(response => {
-            setHisotryResults(response.data);
-            setLoadingHist(false);
-        })
-
-        //获取预测数据
-        axios.get(props.urls.predict + props.keys.key).then(response => {
-            setPredictResults(response.data);
-            setLoadingPred(false);
-            console.log(response.data)
         })
     }, []);
-
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -166,11 +156,10 @@ function Btc28(props) {
 
     const optionrows = [];
     const num = [];
-    if (!isLoadingLatest && !isLoadingHist && !isLoadingPred) {
-        var timenow = Date.parse(new Date())/1000 + (new Date().getTimezoneOffset())*60
-        var nextdraw = Date.parse(data.Time)/1000-28800+60;
-        var countdown = nextdraw - timenow
-        console.log(nextdraw- timenow)
+    if (dataLoaded) {
+        var btc_timenow = Date.parse(new Date())/1000 + (new Date().getTimezoneOffset())*60
+        var btc_nextdraw = Date.parse(data.Time)/1000-28800+60;
+        var countdown = btc_nextdraw - btc_timenow
         
         for (let i = 0; i < 50; i++) {
             optionrows.push(<option value={data.Draw - i}>{data.Draw - i}</option>)
@@ -196,7 +185,7 @@ function Btc28(props) {
         }
     }
 
-    if (!isLoadingLatest && !isLoadingHist && !isLoadingPred) {
+    if (dataLoaded) {
         return (
             <>
                 {/* Upper part */}
@@ -266,11 +255,6 @@ function Btc28(props) {
                 </Box>
             </>
         );
-        setTimeout(() =>{
-            axios.get(props.urls.latest).then(response => {
-                setData(response.data)
-                })
-            },countdown);
     } else {
         return (<></>);
     }

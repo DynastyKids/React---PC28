@@ -70,6 +70,7 @@ export default function BodyTab() {
             </Box>
             <TabPanel value={value} index={0}>
                 <Canada28 urls={jsonURL.datas.ca} keys={devKey} />
+                {console.log(jsonURL.datas.ca)}
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <Bj28 urls={jsonURL.datas.bg} keys={devKey}/>
