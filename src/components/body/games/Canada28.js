@@ -138,14 +138,29 @@ function Canada28(props) {
         const requestLatest = axios.get(props.urls.latest)
         const requestHistory = axios.get(props.urls.history + props.keys.key)
         const requestPredict = axios.get(props.urls.predict + props.keys.key)
+        var arrdata
         axios.all([requestLatest, requestHistory, requestPredict]).then(axios.spread((...responses) => {
             setData(responses[0].data);
             setHisotryResults(responses[1].data);
             setPredictResults(responses[2].data);
             setDataLoaded(true);
-        })).catch(errors => {
+            arrdata=responses[1].data
+        }))
 
-        })
+        const fetchDataAfterInterval = setInterval(() => {
+            if((Date.parse(new Date(arrdata.Data[0].time)) / 1000 - 28800 + 210) < (Date.parse(new Date()) / 1000)){
+                axios.get(props.urls.latest).then(response => {
+                    if(response.data.Draw!==data.Draw){
+                        setData(response.data)
+                        setDataLoaded(false)
+                        axios.get(props.urls.history + props.keys.key).then(response => {setHisotryResults(response.data);})
+                        axios.get(props.urls.predict + props.keys.key).then(response => {setPredictResults(response.data);})
+                        setDataLoaded(true)
+                    }
+                })
+            }
+        }, 5000);
+        return () => clearInterval(fetchDataAfterInterval);
     }, []);
 
     const [value, setValue] = React.useState(0);
@@ -187,9 +202,7 @@ function Canada28(props) {
                 num.push(<dt>（ 大 ，单 ）</dt>)
             }
         }
-    }
 
-    if (dataLoaded) {
         return (
             <>
                 {/* Upper part */}
