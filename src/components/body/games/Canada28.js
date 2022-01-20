@@ -261,22 +261,17 @@ function Canada28(props) {
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                        <ResultTable data={historyResults} />
+                        {historyResults.Status==='00' ? <ResultTable data={historyResults} /> : (historyResults.Status==='01' ? "当前数据服务已过期，请联系服务商续期": "数据源连接出现了问题")}
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <TrendTable data={historyResults} />
+                        {historyResults.Status==='00' ? <TrendTable data={historyResults} /> : (historyResults.Status==='01' ? "当前数据服务已过期，请联系服务商续期": "数据源连接出现了问题")}
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        <PredictTable preddata={predictResults} histdata={historyResults} />
+                        {predictResults.Status==='00' ? <PredictTable preddata={predictResults} histdata={historyResults} /> : (historyResults.Status==='01' ? "当前数据服务已过期，请联系服务商续期": "数据源连接出现了问题")}
                     </TabPanel>
                 </Box>
             </>
         );
-        setTimeout(() => {
-            axios.get(props.urls.latest).then(response => {
-                setData(response.data)
-            })
-        }, countdown);
     } else {
         return (<></>);
     }
