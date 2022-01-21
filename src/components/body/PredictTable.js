@@ -14,7 +14,6 @@ import './../../App.css';
 export default function ResultTable(props) {
   const [predict_data, setPredictData] = React.useState({ Data: [] });
   const [history_data, setHistoryData] = React.useState({ Data: [] });
-  const [modified_data, setModifiedData]=React.useState({Data:[]});
   const [isReady, setReady] = React.useState(false)
   const [isLoaded, setLoaded] = React.useState(false)
 
@@ -45,7 +44,7 @@ export default function ResultTable(props) {
               <TableCell component="th" scope="row" align="center">{row.draw}</TableCell>
               <TableCell align="center">{row.history}</TableCell>
               <TableCell align="center">{row.size===1 ? "大 | " : "小 | "}{row.odd === 1 ? "奇" : "偶"}</TableCell>
-              <TableCell align="center">{row.match!==undefined ? (row.match===1? <img src={icon_yes}/>:<img src={icon_no}/>) : ""}</TableCell>
+              <TableCell align="center">{row.match!==undefined ? (row.match===1? <img src={icon_yes} alt="iYes"/>:<img src={icon_no} alt="iNo"/>) : ""}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -60,7 +59,7 @@ export default function ResultTable(props) {
           valueset[index].history=history_data.Data[indexj].calc + " = "+history_data.Data[indexj].result
           valueset[index].value=history_data.Data[indexj].result
           
-            if(valueset[index].value >=14 && valueset[index].size===1 || valueset[index].value<14 && valueset[index].size===0 || valueset[index].value%2 == valueset[index].odd){
+            if(valueset[index].value >=14 && valueset[index].size===1 || valueset[index].value<14 && valueset[index].size===0 || valueset[index].value%2 === valueset[index].odd){
               valueset[index].match = 1
             } else{
               valueset[index].match = 0

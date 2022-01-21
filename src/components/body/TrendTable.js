@@ -6,14 +6,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { GlobalStyles } from '@mui/styled-engine';
 
 export default function ResultTable(props) {
     const [data, setData] = React.useState({ Data: [] });
-    const [isCalculated, setCalculated] = React.useState(false)
-
-
-    // console.log(props.data)
 
     React.useEffect(() => {
         setData(props.data);

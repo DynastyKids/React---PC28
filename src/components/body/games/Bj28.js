@@ -134,7 +134,6 @@ function Bj28(props) {
     const [dataLoaded, setDataLoaded] = React.useState(false)
     const [historyResults, setHisotryResults] = React.useState({ Data: [] });
     const [predictResults, setPredictResults] = React.useState({ Data: [] });
-    const [countdownTime, setCountdownTime] = React.useState(0);
 
     React.useEffect(() => {
         const requestLatest = axios.get(props.urls.latest)
