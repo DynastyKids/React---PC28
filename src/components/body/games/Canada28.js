@@ -262,15 +262,18 @@ function Canada28(props) {
                     </Box>
                     <TabPanel value={value} index={0}>
                         {historyResults.Status==='00' ? <ResultTable data={historyResults} /> : <></>}
-                        {historyResults.Status==='03' ? "当前数据服务已过期，请联系服务商续期<br>Data Source Key Expired, Please Contact Service Provider": "数据源连接出现了问题<br>Datasource Connect Failed"}
+                        {historyResults.Status==='01' || historyResults.Status==='02' ? "数据源连接出现了问题    Datasource Connect Failed" :<></>}
+                        {historyResults.Status==='03' ? "当前历史数据服务已过期，请联系服务商续期   Data Source Key Expired, Please Contact Service Provider" :<></>}
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         {historyResults.Status==='00' ? <TrendTable data={historyResults} /> : <></>}
-                        {historyResults.Status==='03' ? "当前数据服务已过期，请联系服务商续期<br>Data Source Key Expired, Please Contact Service Provider": "数据源连接出现了问题<br>Datasource Connect Failed"}
+                        {historyResults.Status==='01' || historyResults.Status==='02' ? "数据源连接出现了问题    Datasource Connect Failed" :<></>}
+                        {historyResults.Status==='03' ? "当前历史数据服务已过期，请联系服务商续期   Data Source Key Expired, Please Contact Service Provider" :<></>}
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         {predictResults.Status==='00' ? <PredictTable preddata={predictResults} histdata={historyResults} /> : <></>}
-                        {historyResults.Status==='03' ? "当前数据服务已过期，请联系服务商续期<br>Data Source Key Expired, Please Contact Service Provider": "数据源连接出现了问题<br>Datasource Connect Failed"}
+                        {predictResults.Status==='01' || predictResults.Status==='02' ? "数据源连接出现了问题    Datasource Connect Failed" :<></>}
+                        {predictResults.Status==='03' ? "当前预测数据服务已过期，请联系服务商续期   Data Source Key Expired, Please Contact Service Provider" :<></>}
                     </TabPanel>
                 </Box>
             </>
