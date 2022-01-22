@@ -10,3 +10,10 @@ This is a gambling information website based on React
 2. cd到文件夹内，运行```npm install``` 以安装需要的组件 | Navigate to project folder, then run ```npm install``` to install all dependency packages
 
 3. 安装完毕后可以使用```npm run build```编译镜像版本或者使用```npm start```使用开发模式查看 | After NPM install, then you can compile a static version by running ```npm run build ``` or using developing server by running ```npm start```
+
+## 其他信息 | Notes
+
+本站另有PHP版本，基于PHP 7搭建，但已经不再提供技术支持
+This website is originally based on PHP version, with this React project has become stable, the PHP version is deprecated.
+
+https://gitlab.com/DynastyKids/php_pc28
