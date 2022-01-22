@@ -148,7 +148,7 @@ function Canada28(props) {
         }))
 
         const fetchDataAfterInterval = setInterval(() => {
-            if((Date.parse(new Date(arrdata.Data[0].time)) / 1000 - 28800 + 210) < (Date.parse(new Date()) / 1000)){
+            if((Date.parse(new Date(data.Time)) / 1000 - 28800 + 210) < (Date.parse(new Date()) / 1000)){
                 axios.get(props.urls.latest).then(response => {
                     if(response.data.Draw!==data.Draw){
                         setData(response.data)
@@ -173,10 +173,10 @@ function Canada28(props) {
     const num = [];
     if (dataLoaded) {
         var ca_timenow = Date.parse(new Date()) / 1000 + (new Date().getTimezoneOffset()) * 60
-        var ca_lastdrawHrs = new Date(historyResults.Data[0].time).getUTCHours()
+        var ca_lastdrawHrs = (historyResults.Status==='00' ? new Date(historyResults.Data[0].time).getUTCHours() : ca_timenow)
         var ca_nextdraw = Date.parse(data.Time) / 1000 - 28800 + 210;
         if(ca_lastdrawHrs===20){
-            ca_nextdraw = Date.parse(historyResults.Data[0].time)/1000-28800+3600
+            ca_nextdraw = (historyResults.Status==='00' ? new Date(historyResults.Data[0].time).getUTCHours() : ca_timenow)
         }
         var countdown = ca_nextdraw - ca_timenow
 
@@ -261,13 +261,16 @@ function Canada28(props) {
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                        {historyResults.Status==='00' ? <ResultTable data={historyResults} /> : (historyResults.Status==='01' ? "当前数据服务已过期，请联系服务商续期": "数据源连接出现了问题")}
+                        {historyResults.Status==='00' ? <ResultTable data={historyResults} /> : <></>}
+                        {historyResults.Status==='03' ? "当前数据服务已过期，请联系服务商续期<br>Data Source Key Expired, Please Contact Service Provider": "数据源连接出现了问题<br>Datasource Connect Failed"}
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        {historyResults.Status==='00' ? <TrendTable data={historyResults} /> : (historyResults.Status==='01' ? "当前数据服务已过期，请联系服务商续期": "数据源连接出现了问题")}
+                        {historyResults.Status==='00' ? <TrendTable data={historyResults} /> : <></>}
+                        {historyResults.Status==='03' ? "当前数据服务已过期，请联系服务商续期<br>Data Source Key Expired, Please Contact Service Provider": "数据源连接出现了问题<br>Datasource Connect Failed"}
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        {predictResults.Status==='00' ? <PredictTable preddata={predictResults} histdata={historyResults} /> : (historyResults.Status==='01' ? "当前数据服务已过期，请联系服务商续期": "数据源连接出现了问题")}
+                        {predictResults.Status==='00' ? <PredictTable preddata={predictResults} histdata={historyResults} /> : <></>}
+                        {historyResults.Status==='03' ? "当前数据服务已过期，请联系服务商续期<br>Data Source Key Expired, Please Contact Service Provider": "数据源连接出现了问题<br>Datasource Connect Failed"}
                     </TabPanel>
                 </Box>
             </>

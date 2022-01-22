@@ -149,7 +149,7 @@ function Bj28(props) {
         }))
         
         const fetchDataAfterInterval = setInterval(() => {
-            if((Date.parse(new Date(arrdata.Data[0].time)) / 1000 - 28800 + 300) < (Date.parse(new Date()) / 1000)){
+            if((Date.parse(new Date(data.Time)) / 1000 - 28800 + 300) < (Date.parse(new Date()) / 1000)){
                 axios.get(props.urls.latest).then(response => {
                     if(response.data.Draw!==data.Draw){
                         setData(response.data)
@@ -174,11 +174,11 @@ function Bj28(props) {
     const num = [];
     if (dataLoaded) {
         var bg_timenow = Date.parse(new Date())/1000 + (new Date().getTimezoneOffset())*60
-        var bg_lastdrawHrs = new Date(historyResults.Data[0].time).getUTCHours()
-        var bg_lastdrawMis = new Date(historyResults.Data[0].time).getMinutes()
+        var bg_lastdrawHrs = new Date(data.Time).getUTCHours()
+        var bg_lastdrawMis = new Date(data.Time).getMinutes()
         var bg_nextdraw = Date.parse(data.Time)/1000-28800+300;
         if(bg_lastdrawHrs>=23 && bg_lastdrawMis>=51){
-            bg_nextdraw = Date.parse(historyResults.Data[0].time)/1000-28800+32400
+            bg_nextdraw = Date.parse(data.Time)/1000-28800+32400
         }
         var countdown = bg_nextdraw - bg_timenow
         for (let i = 0; i < 50; i++) {
@@ -229,9 +229,6 @@ function Bj28(props) {
                                             </NativeSelect>
                                         </FormControl>
                                     </Box>
-                                    {/* <div className="prev"></div> */}
-                                    {/* <div className="t">123</div> */}
-                                    {/* <div className="next"></div> */}
                                 </div>
                             </div>
                         </div>
@@ -264,13 +261,16 @@ function Bj28(props) {
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                        {historyResults.Status==='00' ? <ResultTable data={historyResults} /> : (historyResults.Status==='01' ? "当前数据服务已过期，请联系服务商续期": "数据源连接出现了问题")}
+                        {historyResults.Status==='00' ? <ResultTable data={historyResults} /> :<></>}
+                        {historyResults.Status==='03' ? "当前数据服务已过期，请联系服务商续期<br>Data Source Key Expired, Please Contact Service Provider": "数据源连接出现了问题<br>Datasource Connect Failed"}
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        {historyResults.Status==='00' ? <TrendTable data={historyResults} /> : (historyResults.Status==='01' ? "当前数据服务已过期，请联系服务商续期": "数据源连接出现了问题")}
+                        {historyResults.Status==='00' ? <TrendTable data={historyResults} /> :<></>}
+                        {historyResults.Status==='03' ? "当前数据服务已过期，请联系服务商续期<br>Data Source Key Expired, Please Contact Service Provider": "数据源连接出现了问题<br>Datasource Connect Failed"}
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        {predictResults.Status==='00' ? <PredictTable preddata={predictResults} histdata={historyResults} /> : (historyResults.Status==='01' ? "当前数据服务已过期，请联系服务商续期": "数据源连接出现了问题")}
+                        {predictResults.Status==='00' ? <PredictTable preddata={predictResults} histdata={historyResults} /> : <></>}
+                        {historyResults.Status==='03' ? "当前数据服务已过期，请联系服务商续期<br>Data Source Key Expired, Please Contact Service Provider": "数据源连接出现了问题<br>Datasource Connect Failed"}
                     </TabPanel>
                 </Box>
             </>
