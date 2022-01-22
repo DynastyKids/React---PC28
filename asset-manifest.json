@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/DynastyKids/React-PC28/static/css/main.ab99e26d.chunk.css",
-    "main.js": "/DynastyKids/React-PC28/static/js/main.79fc166c.chunk.js",
-    "main.js.map": "/DynastyKids/React-PC28/static/js/main.79fc166c.chunk.js.map",
-    "runtime-main.js": "/DynastyKids/React-PC28/static/js/runtime-main.a09deedd.js",
-    "runtime-main.js.map": "/DynastyKids/React-PC28/static/js/runtime-main.a09deedd.js.map",
-    "static/js/2.f106fa46.chunk.js": "/DynastyKids/React-PC28/static/js/2.f106fa46.chunk.js",
-    "static/js/2.f106fa46.chunk.js.map": "/DynastyKids/React-PC28/static/js/2.f106fa46.chunk.js.map",
-    "static/js/3.98b21b6c.chunk.js": "/DynastyKids/React-PC28/static/js/3.98b21b6c.chunk.js",
-    "static/js/3.98b21b6c.chunk.js.map": "/DynastyKids/React-PC28/static/js/3.98b21b6c.chunk.js.map",
-    "index.html": "/DynastyKids/React-PC28/index.html",
-    "static/css/main.ab99e26d.chunk.css.map": "/DynastyKids/React-PC28/static/css/main.ab99e26d.chunk.css.map",
-    "static/js/2.f106fa46.chunk.js.LICENSE.txt": "/DynastyKids/React-PC28/static/js/2.f106fa46.chunk.js.LICENSE.txt",
-    "static/media/App.css": "/DynastyKids/React-PC28/static/media/background.4230f72c.jpg",
-    "static/media/china.9f748c81.png": "/DynastyKids/React-PC28/static/media/china.9f748c81.png",
-    "static/media/ctc.35240aca.png": "/DynastyKids/React-PC28/static/media/ctc.35240aca.png",
-    "static/media/logo.e0e3d8ae.png": "/DynastyKids/React-PC28/static/media/logo.e0e3d8ae.png",
-    "static/media/pic_pc.03b19366.jpg": "/DynastyKids/React-PC28/static/media/pic_pc.03b19366.jpg",
-    "static/media/pic_wap.55a55337.jpg": "/DynastyKids/React-PC28/static/media/pic_wap.55a55337.jpg"
+    "main.css": "/React-PC28/static/css/main.b017ae20.chunk.css",
+    "main.js": "/React-PC28/static/js/main.79fc166c.chunk.js",
+    "main.js.map": "/React-PC28/static/js/main.79fc166c.chunk.js.map",
+    "runtime-main.js": "/React-PC28/static/js/runtime-main.b92deee2.js",
+    "runtime-main.js.map": "/React-PC28/static/js/runtime-main.b92deee2.js.map",
+    "static/js/2.f106fa46.chunk.js": "/React-PC28/static/js/2.f106fa46.chunk.js",
+    "static/js/2.f106fa46.chunk.js.map": "/React-PC28/static/js/2.f106fa46.chunk.js.map",
+    "static/js/3.98b21b6c.chunk.js": "/React-PC28/static/js/3.98b21b6c.chunk.js",
+    "static/js/3.98b21b6c.chunk.js.map": "/React-PC28/static/js/3.98b21b6c.chunk.js.map",
+    "index.html": "/React-PC28/index.html",
+    "static/css/main.b017ae20.chunk.css.map": "/React-PC28/static/css/main.b017ae20.chunk.css.map",
+    "static/js/2.f106fa46.chunk.js.LICENSE.txt": "/React-PC28/static/js/2.f106fa46.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/React-PC28/static/media/background.4230f72c.jpg",
+    "static/media/china.9f748c81.png": "/React-PC28/static/media/china.9f748c81.png",
+    "static/media/ctc.35240aca.png": "/React-PC28/static/media/ctc.35240aca.png",
+    "static/media/logo.e0e3d8ae.png": "/React-PC28/static/media/logo.e0e3d8ae.png",
+    "static/media/pic_pc.03b19366.jpg": "/React-PC28/static/media/pic_pc.03b19366.jpg",
+    "static/media/pic_wap.55a55337.jpg": "/React-PC28/static/media/pic_wap.55a55337.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.a09deedd.js",
+    "static/js/runtime-main.b92deee2.js",
     "static/js/2.f106fa46.chunk.js",
-    "static/css/main.ab99e26d.chunk.css",
+    "static/css/main.b017ae20.chunk.css",
     "static/js/main.79fc166c.chunk.js"
   ]
 }
